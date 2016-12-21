@@ -1,0 +1,2 @@
+# https://github.com/jmcgeheeiv/pyfakefs/issues/147
+pyfakefs > 2.9
