@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import os
+import tempfile
+import shutil
 
 
-__all__ = ['FakeFS']
+__all__ = ['FakeFS', 'TempFS']
 
 class FakeFS(object):
     def __init__(self, patcher):
@@ -30,3 +33,33 @@ class FakeFS(object):
             return mapping[name]
         klassname = self.__class__.__name__
         raise AttributeError("AttributeError: %s object has no attribute %r" % (klassname, name))
+
+
+class TempFS(object):
+    def __init__(self, tempdir):
+        self.root = tempdir
+
+    @classmethod
+    def set_up(cls, test=None):
+        temp_path = tempfile.mkdtemp()
+        if test:
+            test.addCleanup(lambda: TempFS(temp_path).tear_down)
+        return TempFS(temp_path)
+
+    def tear_down(self):
+        shutil.rmtree(self.root)
+
+    def create_directory(self, dirname):
+        if dirname.startswith(self.root):
+            path = dirname
+        else:
+            if dirname.startswith(os.sep):
+                dirname = dirname[len(os.sep):]
+            path = os.path.join(self.root, dirname)
+        os.makedirs(path)
+        return path
+
+    def create_file(self, path):
+        with open(path, 'w') as fp:
+            fp.write('')
+
