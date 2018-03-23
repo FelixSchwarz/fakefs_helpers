@@ -17,9 +17,10 @@ class FakeFS(object):
         from pyfakefs.fake_filesystem_unittest import Patcher
         stubber = Patcher()
         stubber.setUp()
+        fake_fs = FakeFS(stubber)
         if test:
-            test.addCleanup(stubber.tearDown)
-        return FakeFS(stubber)
+            test.addCleanup(fake_fs.tear_down)
+        return fake_fs
 
     def tear_down(self):
         self._stubber.tearDown()
@@ -31,6 +32,8 @@ class FakeFS(object):
         }
         if name in mapping:
             return mapping[name]
+        if hasattr(self._stubber.fs, name):
+            return getattr(self._stubber.fs, name)
         klassname = self.__class__.__name__
         raise AttributeError("AttributeError: %s object has no attribute %r" % (klassname, name))
 
@@ -42,9 +45,10 @@ class TempFS(object):
     @classmethod
     def set_up(cls, test=None):
         temp_path = tempfile.mkdtemp()
+        temp_fs = TempFS(temp_path)
         if test:
-            test.addCleanup(lambda: TempFS(temp_path).tear_down)
-        return TempFS(temp_path)
+            test.addCleanup(temp_fs.tear_down)
+        return temp_fs
 
     def tear_down(self):
         shutil.rmtree(self.root)
