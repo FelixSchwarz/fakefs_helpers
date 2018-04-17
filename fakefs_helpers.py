@@ -41,6 +41,8 @@ class FakeFS(object):
 class TempFS(object):
     def __init__(self, tempdir):
         self.root = tempdir
+        # required attribute which is accessed e.g. by FakeFile.__init__()
+        self.is_windows_fs = False
 
     @classmethod
     def set_up(cls, test=None):
