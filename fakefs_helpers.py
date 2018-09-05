@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from collections import namedtuple
 import os
 import tempfile
 import shutil
@@ -38,6 +39,9 @@ class FakeFS(object):
         raise AttributeError("AttributeError: %s object has no attribute %r" % (klassname, name))
 
 
+FakeFakeFile = namedtuple('FakeFakeFile', ('name', 'path'))
+
+
 class TempFS(object):
     def __init__(self, tempdir):
         self.root = tempdir
@@ -65,7 +69,11 @@ class TempFS(object):
         os.makedirs(path)
         return path
 
-    def create_file(self, path):
-        with open(path, 'w') as fp:
-            fp.write('')
+    def create_file(self, path, contents=b''):
+        with open(path, 'wb') as fp:
+            fp.write(contents)
+        return FakeFakeFile(
+            name=os.path.basename(path),
+            path=os.path.abspath(path)
+        )
 
