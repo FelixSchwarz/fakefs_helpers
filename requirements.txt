@@ -1,2 +1,2 @@
-# https://github.com/jmcgeheeiv/pyfakefs/issues/147
-pyfakefs > 2.9
+# PEP8-compatible method names
+pyfakefs >= 3.4

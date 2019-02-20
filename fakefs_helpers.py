@@ -28,8 +28,7 @@ class FakeFS(object):
 
     def __getattr__(self, name):
         mapping = {
-            'create_directory': self._stubber.fs.CreateDirectory,
-            'create_file': self._stubber.fs.CreateFile,
+            'create_directory': self._stubber.fs.create_dir,
         }
         if name in mapping:
             return mapping[name]
