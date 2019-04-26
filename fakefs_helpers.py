@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) 2016-2019 Felix Schwarz
+# The source code contained in this file is licensed under the MIT license or
+# (at your option) the CC0 v1.0.
+# SPDX-License-Identifier: MIT or CC0-1.0
 
 from collections import namedtuple
 import os
