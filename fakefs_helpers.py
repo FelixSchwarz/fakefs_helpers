@@ -60,23 +60,31 @@ class TempFS(object):
         return temp_fs
 
     def tear_down(self):
-        shutil.rmtree(self.root)
+        self.rm_tree(self.root)
+
+    def rm_tree(self, path):
+        abs_path = self._prefix_with_root_dir(path)
+        shutil.rmtree(abs_path)
 
     def create_directory(self, dirname):
-        if dirname.startswith(self.root):
-            path = dirname
-        else:
-            if dirname.startswith(os.sep):
-                dirname = dirname[len(os.sep):]
-            path = os.path.join(self.root, dirname)
+        path = self._prefix_with_root_dir(dirname)
         os.makedirs(path)
         return path
 
     def create_file(self, path, contents=b''):
-        with open(path, 'wb') as fp:
+        abs_path = self._prefix_with_root_dir(path)
+        with open(abs_path, 'wb') as fp:
             fp.write(contents)
         return FakeFakeFile(
             name=os.path.basename(path),
-            path=os.path.abspath(path)
+            path=abs_path,
         )
+
+    def _prefix_with_root_dir(self, path):
+        if path.startswith(self.root):
+            return path
+        if path.startswith(os.sep):
+            path = path[len(os.sep):]
+        assert not os.path.isabs(path)
+        return os.path.join(self.root, path)
 
