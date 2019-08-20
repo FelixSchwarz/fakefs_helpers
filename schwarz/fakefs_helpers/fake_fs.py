@@ -12,10 +12,10 @@ class FakeFS(object):
         self._stubber = patcher
 
     @classmethod
-    def set_up(cls, test=None):
+    def set_up(cls, test=None, **kwargs_patcher):
         # only require pyfakefs if it is actually used
         from pyfakefs.fake_filesystem_unittest import Patcher
-        stubber = Patcher()
+        stubber = Patcher(**kwargs_patcher)
         stubber.setUp()
         fake_fs = FakeFS(stubber)
         if test:
