@@ -1,0 +1,8 @@
+*.pyc
+*.egg-info
+__pycache__
+.project
+.settings
+.pydevproject
+.eggs
+venv*
