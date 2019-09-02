@@ -16,7 +16,7 @@ def requires_from_file(filename):
 
 setup(
     name='FakeFSHelpers',
-    version='1.1',
+    version='1.1.1dev',
 
     author='Felix Schwarz',
     author_email='info@schwarz.eu',
