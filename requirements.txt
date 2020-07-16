@@ -1,3 +1,5 @@
 # PEP8-compatible method names
-pyfakefs >= 3.4
+pyfakefs >= 3.4 ; python_version > '3.0'
+# pyfakefs 4.0.0 dropped Python 2 support, 3.7.2 is the last Python 2 version
+pyfakefs >= 3.4,<4.0 ; python_version == '2'
 
