@@ -9,7 +9,7 @@ python:
 
 
 install:
-    - pip install -r .[testing]
+    - pip install -e .[testing]
 
 script:
     - nosetests
