@@ -1,8 +1,11 @@
 *.pyc
 *.egg-info
 __pycache__
+/build
+/dist
 .project
 .settings
 .pydevproject
 .eggs
 venv*
+/*.sh
