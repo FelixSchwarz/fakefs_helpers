@@ -47,10 +47,11 @@ class TempFS(object):
 
     def create_file(self, path, contents=b''):
         abs_path = self._prefix_with_root_dir(path)
+        path_str = path if (not is_pathlike(path)) else str(path)
         with open(abs_path, 'wb') as fp:
             fp.write(contents)
         return FakeFakeFile(
-            name=os.path.basename(path),
+            name=os.path.basename(path_str),
             path=abs_path,
         )
 

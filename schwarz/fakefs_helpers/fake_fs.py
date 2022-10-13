@@ -44,6 +44,11 @@ class FakeFS(object):
         klassname = self.__class__.__name__
         raise AttributeError("AttributeError: %s object has no attribute %r" % (klassname, name))
 
+    def create_file(self, file_path, *args, **kwargs):
+        if is_pathlike(file_path):
+            file_path = str(file_path)
+        return self._stubber.fs.create_file(file_path, *args, **kwargs)
+
     def create_dir(self, directory_path, *args, **kwargs):
         if is_pathlike(directory_path):
             directory_path = str(directory_path)

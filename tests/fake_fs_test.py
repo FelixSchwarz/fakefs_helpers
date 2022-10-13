@@ -22,6 +22,13 @@ class FakeFSTest(TestCase):
             file_content = fp.read()
         assert (file_content == b'secret')
 
+    def test_create_file_with_path_instance(self):
+        path = Path('/foo.txt')
+        fake_file = self.fs.create_file(path, contents=b'secret')
+        with open(fake_file.path, 'rb') as fp:
+            file_content = fp.read()
+        assert (file_content == b'secret')
+
     def test_add_real_path(self):
         this_file = __file__
         try:
