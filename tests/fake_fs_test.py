@@ -29,7 +29,7 @@ class FakeFSTest(TestCase):
             file_content = fp.read()
         assert (file_content == b'secret')
 
-    def test_add_real_path(self):
+    def test_add_real_file(self):
         this_file = __file__
         try:
             open(this_file, 'r')
@@ -37,9 +37,16 @@ class FakeFSTest(TestCase):
             # file not present in the virtual file syste
             pass
 
-        self.fs.add_real_path(this_file)
+        self.fs.add_real_file(this_file)
         with open(this_file, 'r') as fp:
             assert 'SPDX-License-Identifier' in fp.read()
+
+    def test_add_real_directory(self):
+        this_dir = Path(__file__).parent
+        assert not this_dir.exists()
+
+        self.fs.add_real_directory(this_dir)
+        assert this_dir.is_dir()
 
     def test_create_directory_with_path_instance(self):
         path = Path('/foo')

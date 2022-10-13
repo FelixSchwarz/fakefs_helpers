@@ -53,11 +53,20 @@ class FakeFS(object):
         return self._stubber.fs.create_dir(directory_path, *args, **kwargs)
     create_directory = create_dir
 
+    def add_real_file(self, path, *args, **kwargs):
+        path_str = make_string_path(path)
+        return self._stubber.fs.add_real_file(path_str, *args, **kwargs)
+
+    def add_real_directory(self, path, *args, **kwargs):
+        path_str = make_string_path(path)
+        return self._stubber.fs.add_real_directory(path_str, *args, **kwargs)
+
     def add_real_path(self, path, **kwargs):
         path_str = make_string_path(path)
-        add_fn_name = 'add_real_file' if self._os_path.isfile(path_str) else 'add_real_directory'
-        add_fn = getattr(self, add_fn_name)
-        return add_fn(path_str, **kwargs)
+        if self._os_path.isfile(path_str):
+            return self.add_real_file(path_str, **kwargs)
+        else:
+            return self.add_real_directory(path_str, **kwargs)
 
     def add_real_paths(self, paths, **kwargs):
         for path in paths:
