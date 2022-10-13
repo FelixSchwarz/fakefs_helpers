@@ -11,7 +11,7 @@ import os
 import tempfile
 import shutil
 
-from .utils import is_pathlike
+from .utils import make_string_path
 
 
 __all__= ['TempFS']
@@ -47,7 +47,7 @@ class TempFS(object):
 
     def create_file(self, path, contents=b''):
         abs_path = self._prefix_with_root_dir(path)
-        path_str = path if (not is_pathlike(path)) else str(path)
+        path_str = make_string_path(path)
         with open(abs_path, 'wb') as fp:
             fp.write(contents)
         return FakeFakeFile(
@@ -56,8 +56,7 @@ class TempFS(object):
         )
 
     def _prefix_with_root_dir(self, path):
-        if is_pathlike(path):
-            path = str(path)
+        path = make_string_path(path)
         if path.startswith(self.root):
             return path
         if path.startswith(os.sep):

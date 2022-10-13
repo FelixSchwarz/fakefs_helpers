@@ -8,7 +8,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 
 import os.path
 
-from .utils import is_pathlike
+from .utils import make_string_path
 
 
 __all__ = ['FakeFS']
@@ -45,18 +45,16 @@ class FakeFS(object):
         raise AttributeError("AttributeError: %s object has no attribute %r" % (klassname, name))
 
     def create_file(self, file_path, *args, **kwargs):
-        if is_pathlike(file_path):
-            file_path = str(file_path)
+        file_path = make_string_path(file_path)
         return self._stubber.fs.create_file(file_path, *args, **kwargs)
 
     def create_dir(self, directory_path, *args, **kwargs):
-        if is_pathlike(directory_path):
-            directory_path = str(directory_path)
+        directory_path = make_string_path(directory_path)
         return self._stubber.fs.create_dir(directory_path, *args, **kwargs)
     create_directory = create_dir
 
     def add_real_path(self, path, **kwargs):
-        path_str = str(path) if (not isinstance(path, str)) else path
+        path_str = make_string_path(path)
         add_fn_name = 'add_real_file' if self._os_path.isfile(path_str) else 'add_real_directory'
         add_fn = getattr(self, add_fn_name)
         return add_fn(path_str, **kwargs)
