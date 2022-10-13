@@ -39,11 +39,6 @@ class FakeFS(object):
         self._stubber.tearDown()
 
     def __getattr__(self, name):
-        mapping = {
-            'create_directory': self.create_dir,
-        }
-        if name in mapping:
-            return mapping[name]
         if hasattr(self._stubber.fs, name):
             return getattr(self._stubber.fs, name)
         klassname = self.__class__.__name__
@@ -53,6 +48,7 @@ class FakeFS(object):
         if is_pathlike(directory_path):
             directory_path = str(directory_path)
         return self._stubber.fs.create_dir(directory_path, *args, **kwargs)
+    create_directory = create_dir
 
     def add_real_path(self, path, **kwargs):
         path_str = str(path) if (not isinstance(path, str)) else path
