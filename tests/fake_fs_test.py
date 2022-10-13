@@ -18,3 +18,15 @@ class FakeFSTest(TestCase):
             file_content = fp.read()
         assert (file_content == b'secret')
 
+    def test_add_real_path(self):
+        this_file = __file__
+        try:
+            open(this_file, 'r')
+        except IOError:
+            # file not present in the virtual file syste
+            pass
+
+        self.fs.add_real_path(this_file)
+        with open(this_file, 'r') as fp:
+            assert 'SPDX-License-Identifier' in fp.read()
+

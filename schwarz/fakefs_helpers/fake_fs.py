@@ -48,7 +48,8 @@ class FakeFS(object):
     def add_real_path(self, path, **kwargs):
         path_str = str(path) if (not isinstance(path, str)) else path
         add_fn_name = 'add_real_file' if self._os_path.isfile(path_str) else 'add_real_directory'
-        return add_fn_name(path_str, **kwargs)
+        add_fn = getattr(self, add_fn_name)
+        return add_fn(path_str, **kwargs)
 
     def add_real_paths(self, paths, **kwargs):
         for path in paths:
