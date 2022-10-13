@@ -1,5 +1,10 @@
 # Changelog
 
+### 1.3 (2022-10-13)
+
+- `create_file()` and `create_dir()` now also work with Path instances
+- fixed `FakeFS.add_real_path()`
+- fix requirement of pyfakefs when using Python 2
 
 ### 1.2 (2020-09-01)
 
