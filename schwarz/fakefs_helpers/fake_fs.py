@@ -4,7 +4,11 @@
 # (at your option) the CC0 v1.0.
 # SPDX-License-Identifier: MIT or CC0-1.0
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 import os.path
+
+from .utils import is_pathlike
 
 
 __all__ = ['FakeFS']
@@ -36,7 +40,7 @@ class FakeFS(object):
 
     def __getattr__(self, name):
         mapping = {
-            'create_directory': self._stubber.fs.create_dir,
+            'create_directory': self.create_dir,
         }
         if name in mapping:
             return mapping[name]
@@ -44,6 +48,11 @@ class FakeFS(object):
             return getattr(self._stubber.fs, name)
         klassname = self.__class__.__name__
         raise AttributeError("AttributeError: %s object has no attribute %r" % (klassname, name))
+
+    def create_dir(self, directory_path, *args, **kwargs):
+        if is_pathlike(directory_path):
+            directory_path = str(directory_path)
+        return self._stubber.fs.create_dir(directory_path, *args, **kwargs)
 
     def add_real_path(self, path, **kwargs):
         path_str = str(path) if (not isinstance(path, str)) else path

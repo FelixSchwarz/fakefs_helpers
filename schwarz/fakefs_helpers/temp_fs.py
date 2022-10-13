@@ -4,10 +4,14 @@
 # (at your option) the CC0 v1.0.
 # SPDX-License-Identifier: MIT or CC0-1.0
 
+from __future__ import absolute_import, print_function, unicode_literals
+
 from collections import namedtuple
 import os
 import tempfile
 import shutil
+
+from .utils import is_pathlike
 
 
 __all__= ['TempFS']
@@ -51,6 +55,8 @@ class TempFS(object):
         )
 
     def _prefix_with_root_dir(self, path):
+        if is_pathlike(path):
+            path = str(path)
         if path.startswith(self.root):
             return path
         if path.startswith(os.sep):

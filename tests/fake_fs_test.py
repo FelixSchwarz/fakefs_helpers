@@ -3,6 +3,10 @@
 # (at your option) the CC0 v1.0.
 # SPDX-License-Identifier: MIT or CC0-1.0
 
+try:
+    from pathlib import Path
+except ImportError:
+    from pathlib2 import Path
 from unittest import TestCase
 
 from schwarz.fakefs_helpers import FakeFS
@@ -29,4 +33,9 @@ class FakeFSTest(TestCase):
         self.fs.add_real_path(this_file)
         with open(this_file, 'r') as fp:
             assert 'SPDX-License-Identifier' in fp.read()
+
+    def test_create_directory_with_path_instance(self):
+        path = Path('/foo')
+        fake_dir = self.fs.create_directory(path)
+        assert Path(fake_dir.path).is_dir()
 
