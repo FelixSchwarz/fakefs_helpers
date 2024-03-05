@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2016-2019, 2022 Felix Schwarz
+# Copyright (c) 2016-2019, 2022, 2024 Felix Schwarz
 # The source code contained in this file is licensed under the MIT license or
 # (at your option) the CC0 v1.0.
 # SPDX-License-Identifier: MIT or CC0-1.0
@@ -35,6 +35,12 @@ class TempFS(object):
 
     def tear_down(self):
         self.rm_tree(self.root)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.tear_down()
 
     def rm_tree(self, path):
         abs_path = self._prefix_with_root_dir(path)

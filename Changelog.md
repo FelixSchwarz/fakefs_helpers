@@ -1,5 +1,11 @@
 # Changelog
 
+### 1.4 (2024-03-05)
+
+- added `__enter__()`/`__exit__()` methods to `FakeFS` and `TempFS` so these classes can
+  also work in a `with` block.
+
+
 ### 1.3 (2022-10-13)
 
 - `create_file()`, `create_dir()`, `add_real_file()`, and `add_real_directory()`
